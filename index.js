@@ -25,40 +25,40 @@ function fromDir(startPath, filter, callback) {
   };
 };
 
-var callback_npm = (file) => {
+const callback_npm = (file) => {
   console.log('-- found: ', file);
-  var r = spawnSync(
+  const process = spawnSync(
     'npm',
     ['ci'],
     { cwd: path.dirname(file) }
   );
-  if (r.error) {
-    console.log(`error: ${r.error.message}`);
+  if (process.error) {
+    console.log(`error: ${process.error.message}`);
   }
-  if (r.stderr) {
-    console.log(`stderr: ${r.stderr}`);
+  if (process.stderr) {
+    console.log(`stderr: ${process.stderr}`);
   }
-  console.log(`stdout: ${r.stdout}`);
-  console.log(`status: ${r.status}`);
-  return r.status;
+  console.log(`stdout: ${process.stdout}`);
+  console.log(`status: ${process.status}`);
+  return process.status;
 }
 
-var callback_eslint = (file) => {
+const callback_eslint = (file) => {
   console.log('-- found: ', file);
-  var r = spawnSync(
+  const process = spawnSync(
     `npx`,
     ['eslint', '--no-inline-config', '-c', path.basename(file), '.'],
     { cwd: path.dirname(file) }
   );
-  if (r.error) {
-    console.log(`error: ${r.error.message}`);
+  if (process.error) {
+    console.log(`error: ${process.error.message}`);
   }
-  if (r.stderr) {
-    console.log(`stderr: ${r.stderr}`);
+  if (process.stderr) {
+    console.log(`stderr: ${process.stderr}`);
   }
-  console.log(`stdout: ${r.stdout}`);
-  console.log(`status: ${r.status}`);
-  return r.status;
+  console.log(`stdout: ${process.stdout}`);
+  console.log(`status: ${process.status}`);
+  return process.status;
 }
 
 const run = () => {
