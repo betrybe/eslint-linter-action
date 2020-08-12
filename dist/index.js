@@ -81,38 +81,38 @@ function fromDir(startPath, filter, callback) {
 
 const callback_npm = (file) => {
   console.log('-- found: ', file);
-  const r = spawnSync(
+  const npmProcess = spawnSync(
     'npm',
     ['ci'],
     { cwd: path.dirname(file) }
   );
-  if (r.error) {
-    console.log(`error: ${r.error.message}`);
+  if (npmProcess.error) {
+    console.log(`error: ${npmProcess.error.message}`);
   }
-  if (r.stderr) {
-    console.log(`stderr: ${r.stderr}`);
+  if (npmProcess.stderr) {
+    console.log(`stderr: ${npmProcess.stderr}`);
   }
-  console.log(`stdout: ${r.stdout}`);
-  console.log(`status: ${r.status}`);
-  return r.status;
+  console.log(`stdout: ${npmProcess.stdout}`);
+  console.log(`status: ${npmProcess.status}`);
+  return npmProcess.status;
 }
 
 const callback_eslint = (file) => {
   console.log('-- found: ', file);
-  const r = spawnSync(
+  const eslintProcess = spawnSync(
     `npx`,
     ['eslint', '--no-inline-config', '-c', path.basename(file), '.'],
     { cwd: path.dirname(file) }
   );
-  if (r.error) {
-    console.log(`error: ${r.error.message}`);
+  if (eslintProcess.error) {
+    console.log(`error: ${eslintProcess.error.message}`);
   }
-  if (r.stderr) {
-    console.log(`stderr: ${r.stderr}`);
+  if (eslintProcess.stderr) {
+    console.log(`stderr: ${eslintProcess.stderr}`);
   }
-  console.log(`stdout: ${r.stdout}`);
-  console.log(`status: ${r.status}`);
-  return r.status;
+  console.log(`stdout: ${eslintProcess.stdout}`);
+  console.log(`status: ${eslintProcess.status}`);
+  return eslintProcess.status;
 }
 
 const run = () => {
