@@ -25,7 +25,7 @@ function fromDir(startPath, filter, callback) {
   };
 };
 
-var callback_npm = (file) => {
+const callback_npm = (file) => {
   console.log('-- found: ', file);
   var r = spawnSync(
     'npm',
@@ -43,7 +43,7 @@ var callback_npm = (file) => {
   return r.status;
 }
 
-var callback_eslint = (file) => {
+const callback_eslint = (file) => {
   console.log('-- found: ', file);
   var r = spawnSync(
     `npx`,
