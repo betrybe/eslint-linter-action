@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const { spawnSync } = require("child_process");
 const core = require('@actions/core');
+const github = require('@actions/github');
 
 const root = process.env.GITHUB_WORKSPACE || process.cwd()
 
@@ -63,12 +64,29 @@ const callback_eslint = (file) => {
   return eslintProcess.status;
 }
 
-const run = () => {
-  let status = 0
-  status += fromDir(root, 'package.json', callback_npm);
-  status += fromDir(root, '.eslintrc.json', callback_eslint);
-  console.log(`exit code: ${status}`);
-  process.exit(status);
+const run = async () => {
+  try {
+    const token = core.getInput('token', { required: true });
+    const client = new github.GitHub(token);
+    const { source: { owner, repo }, issue: { sourcePR } } = github.context;
+    let status = 0;
+
+    status += fromDir(root, 'package.json', callback_npm);
+    status += fromDir(root, '.eslintrc.json', callback_eslint);
+    console.log(`exit code: ${status}`);
+
+    await client.issues.createComment({
+      owner,
+      repo,
+      issue_number: parseInt(sourcePR),
+      body: "Testa comentário"
+    });
+
+    process.exit(status);
+  }
+  catch(error) {
+    core.setFailed(error.message);
+  }
 }
 
 run();
