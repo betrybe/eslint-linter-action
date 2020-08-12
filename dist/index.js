@@ -81,7 +81,7 @@ function fromDir(startPath, filter, callback) {
 
 const callback_npm = (file) => {
   console.log('-- found: ', file);
-  var r = spawnSync(
+  const r = spawnSync(
     'npm',
     ['ci'],
     { cwd: path.dirname(file) }
@@ -99,7 +99,7 @@ const callback_npm = (file) => {
 
 const callback_eslint = (file) => {
   console.log('-- found: ', file);
-  var r = spawnSync(
+  const r = spawnSync(
     `npx`,
     ['eslint', '--no-inline-config', '-c', path.basename(file), '.'],
     { cwd: path.dirname(file) }
