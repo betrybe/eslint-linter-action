@@ -67,7 +67,7 @@ const core = __webpack_require__(470);
 const root = process.env.GITHUB_WORKSPACE || process.cwd()
 
 core.info("teste", process.env.GITHUB_WORKSPACE);
-core.info("teste2", process.env.GITHUB_WORKSPACE);
+core.info("teste2", process.cwd());
 core.info('root: ', root)
 
 function fromDir(startPath, filter, callback) {
