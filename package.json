@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/betrybe/linter-evaluator-action/issues"
   },
-  "homepage": "https://github.com/betrybe/linter-evaluator-action#readme"
+  "homepage": "https://github.com/betrybe/linter-evaluator-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0",
+    "@zeit/ncc": "^0.22.3"
+  }
 }
