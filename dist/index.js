@@ -66,11 +66,11 @@ const core = __webpack_require__(470);
 
 const root = process.env.GITHUB_WORKSPACE || process.cwd()
 
-core.info('root: ', root)
+console.log('root: ', root)
 
 function fromDir(startPath, filter, callback) {
   if (!fs.existsSync(startPath)) {
-    core.info("no dir ", startPath);
+    console.log("no dir ", startPath);
     return;
   }
   var files = fs.readdirSync(startPath);
@@ -89,38 +89,38 @@ function fromDir(startPath, filter, callback) {
 };
 
 const callback_npm = (file) => {
-  core.info('-- found: ', file);
+  console.log('-- found: ', file);
   const npmProcess = spawnSync(
     'npm',
     ['ci'],
     { cwd: path.dirname(file) }
   );
   if (npmProcess.error) {
-    core.info(`error: ${npmProcess.error.message}`);
+    console.log(`error: ${npmProcess.error.message}`);
   }
   if (npmProcess.stderr) {
-    core.info(`stderr: ${npmProcess.stderr}`);
+    console.log(`stderr: ${npmProcess.stderr}`);
   }
-  core.info(`stdout: ${npmProcess.stdout}`);
-  core.info(`status: ${npmProcess.status}`);
+  console.log(`stdout: ${npmProcess.stdout}`);
+  console.log(`status: ${npmProcess.status}`);
   return npmProcess.status;
 }
 
 const callback_eslint = (file) => {
-  core.info('-- found: ', file);
+  console.log('-- found: ', file);
   const eslintProcess = spawnSync(
     `npx`,
     ['eslint', '--no-inline-config', '-c', path.basename(file), '.'],
     { cwd: path.dirname(file) }
   );
   if (eslintProcess.error) {
-    core.info(`error: ${eslintProcess.error.message}`);
+    console.log(`error: ${eslintProcess.error.message}`);
   }
   if (eslintProcess.stderr) {
-    core.info(`stderr: ${eslintProcess.stderr}`);
+    console.log(`stderr: ${eslintProcess.stderr}`);
   }
-  core.info(`stdout: ${eslintProcess.stdout}`);
-  core.info(`status: ${eslintProcess.status}`);
+  console.log(`stdout: ${eslintProcess.stdout}`);
+  console.log(`status: ${eslintProcess.status}`);
   return eslintProcess.status;
 }
 
@@ -128,7 +128,7 @@ const run = () => {
   let status = 0
   status += fromDir(root, 'package.json', callback_npm);
   status += fromDir(root, '.eslintrc.json', callback_eslint);
-  core.info(`exit code: ${status}`);
+  console.log(`exit code: ${status}`);
   process.exit(status);
 }
 
