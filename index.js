@@ -68,7 +68,9 @@ const run = async () => {
   try {
     const token = core.getInput('token', { required: true });
     const octokit = github.getOctokit(token);
-    const { owner, repo } = github.context.repo();
+    const { repo, owner } = github.context;
+    console.log('repo', repo)
+    console.log('owner', owner)
     const { number: sourcePR } = github.context.issue();
     let status = 0;
 
