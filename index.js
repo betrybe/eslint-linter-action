@@ -67,7 +67,7 @@ const callback_eslint = (file) => {
 const run = async () => {
   try {
     const token = core.getInput('token', { required: true });
-    const client = new github.GitHub(token);
+    const octokit = github.getOctokit(token)
     const { source: { owner, repo }, issue: { sourcePR } } = github.context;
     let status = 0;
 
@@ -75,7 +75,7 @@ const run = async () => {
     status += fromDir(root, '.eslintrc.json', callback_eslint);
     console.log(`exit code: ${status}`);
 
-    await client.issues.createComment({
+    await octokit.issues.createComment({
       owner,
       repo,
       issue_number: parseInt(sourcePR),
