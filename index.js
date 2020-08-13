@@ -68,10 +68,10 @@ const run = async () => {
   try {
     const token = core.getInput('token', { required: true });
     const octokit = github.getOctokit(token);
-    const { issue: { owner, repo, number } } = github.context;
-    console.log('owner', owner)
+    const { repo, issue } = github.context;
     console.log('repo', repo)
-    console.log('number', number)
+    console.log('issue', issue)
+
     let status = 0;
 
     status += fromDir(root, 'package.json', callback_npm);
@@ -81,7 +81,7 @@ const run = async () => {
     await octokit.issues.createComment({
       owner,
       repo,
-      issue_number: number,
+      issue_number: parseInt(sourcePR),
       body: "Testa comentário"
     });
 
