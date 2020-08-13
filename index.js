@@ -67,7 +67,8 @@ const callback_eslint = (file) => {
 const run = async () => {
   try {
     const token = core.getInput('token', { required: true });
-    const octokit = github.getOctokit(token)
+    const octokit = github.getOctokit(token);
+    console.log('context', github.context);
     const { source: { owner, repo }, issue: { sourcePR } } = github.context;
     let status = 0;
 
