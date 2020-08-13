@@ -94,7 +94,7 @@ const run = async () => {
     console.log(`exit code: ${status}`);
     console.log("All errors", eslintOutcomes);
 
-    const feedbackMessage = buildFeedbackMessage(eslintOutcomes);
+    const feedbackMessage = buildFeedbackMessage(eslintOutcomes, root);
 
     console.log('feedbackMessage\n', feedbackMessage);
 
