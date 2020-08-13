@@ -23,9 +23,9 @@ const listErrors = (eslintOutcomes, root) => (
 const getSummaryMessage = (eslintOutcomes) => {
   const errorsCount = getErrorsCount(eslintOutcomes);
 
-  if (errorsCount === 0) return 'Nenhum erro encontrado.';
-  if (errorsCount === 1) return 'Foi encontrado 1 erro.';
-  return `Foram encontrados ${errorsCount} erros.`;
+  if (errorsCount === 0) return '### Nenhum erro encontrado.';
+  if (errorsCount === 1) return '### Foi encontrado 1 erro.';
+  return `### Foram encontrados ${errorsCount} erros.`;
 }
 
 const buildFeedbackMessage = (eslintOutcomes, root) => {
