@@ -1,6 +1,6 @@
 name: "Linter Evaluator"
 description: "Greet someone and record the time"
-with:
+inputs:
   token:
     description: "The GitHub token to use for making API requests"
     required: true
