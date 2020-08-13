@@ -171,7 +171,7 @@ const github = __webpack_require__(469);
 
 const root = process.env.GITHUB_WORKSPACE || process.cwd()
 
-core.info('root: ', root)
+console.log('root: ', root)
 
 function fromDir(startPath, filter, callback) {
   if (!fs.existsSync(startPath)) {
