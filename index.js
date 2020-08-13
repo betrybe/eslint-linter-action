@@ -68,8 +68,8 @@ const run = async () => {
   try {
     const token = core.getInput('token', { required: true });
     const octokit = github.getOctokit(token);
-    console.log('context', github.context);
-    const { source: { owner, repo }, issue: { sourcePR } } = github.context;
+    const { owner, repo } = github.context.repo();
+    const { number: sourcePR } = github.context.issue();
     let status = 0;
 
     status += fromDir(root, 'package.json', callback_npm);
