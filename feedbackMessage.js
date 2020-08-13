@@ -7,7 +7,7 @@ const buildErrorMessage = ({ line, message }) => `- Linha **${line}**: ${message
 const buildFileSection = ({ filePath }, root) => {
   const relativePath = filePath.replace(root, '');
 
-  return `### Arquivo \`${relativePath}\``;
+  return `#### Arquivo \`${relativePath}\``;
 };
 
 const buildFileErrors = (currentFile, root) => {
