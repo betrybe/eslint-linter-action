@@ -233,9 +233,10 @@ const run = async () => {
   try {
     const token = core.getInput('token', { required: true });
     const octokit = github.getOctokit(token);
-    const { repo, issue } = github.context;
-    console.log('repo', repo)
-    console.log('issue', issue)
+    const { repo } = github.context;
+    console.log('context', github.context)
+    console.log('issue', github.contex.issue)
+    console.log('repo', github.contex.repo)
 
     let status = 0;
 
