@@ -235,8 +235,8 @@ const run = async () => {
     const octokit = github.getOctokit(token);
     const { repo } = github.context;
     console.log('context', github.context)
-    console.log('issue', github.contex.issue)
-    console.log('repo', github.contex.repo)
+    console.log('issue', github.context.issue)
+    console.log('repo', github.context.repo)
 
     let status = 0;
 
