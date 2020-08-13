@@ -153,6 +153,26 @@ function onceStrict (fn) {
 
 /***/ }),
 
+/***/ 51:
+/***/ (function(module) {
+
+const getErrorsCount = (eslintOutcomes) => (
+  eslintOutcomes.reduce((acc, { errorCount }) => acc + errorCount, 0)
+);
+
+const buildFeedbackMessage = (eslintOutcomes) => {
+  const errorsCount = getErrorsCount(eslintOutcomes);
+
+  if (errorsCount === 0) return 'Nenhum erro encontrado.';
+  if (errorsCount === 1) return 'Foi encontrado 1 erro.';
+  return `Foram encontrados ${errorsCount} erros.`;
+}
+
+module.exports = buildFeedbackMessage;
+
+
+/***/ }),
+
 /***/ 87:
 /***/ (function(module) {
 
@@ -168,8 +188,10 @@ const fs = __webpack_require__(747);
 const { spawnSync } = __webpack_require__(129);
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
+const buildFeedbackMessage = __webpack_require__(51);
 
-const root = process.env.GITHUB_WORKSPACE || process.cwd()
+const root = process.env.GITHUB_WORKSPACE || process.cwd();
+let eslintOutcomes = [];
 
 console.log('root: ', root)
 
@@ -215,7 +237,7 @@ const callback_eslint = (file) => {
   console.log('-- found: ', file);
   const eslintProcess = spawnSync(
     `npx`,
-    ['eslint', '--no-inline-config', '-c', path.basename(file), '.'],
+    ['eslint', '-f', 'json' ,'--no-inline-config', '-c', path.basename(file), '.'],
     { cwd: path.dirname(file) }
   );
   if (eslintProcess.error) {
@@ -224,12 +246,13 @@ const callback_eslint = (file) => {
   if (eslintProcess.stderr) {
     console.log(`stderr: ${eslintProcess.stderr}`);
   }
+  eslintOutcomes = eslintOutcomes.concat(JSON.parse(eslintProcess.stdout));
   console.log(`stdout: ${eslintProcess.stdout}`);
   console.log(`status: ${eslintProcess.status}`);
   return eslintProcess.status;
 }
 
-const createPullRequestComment = async () => {
+const createPullRequestComment = async (comment) => {
   const token = core.getInput('token', { required: true });
   const octokit = github.getOctokit(token);
   const { owner, repo, number } = github.context.issue;
@@ -242,7 +265,7 @@ const createPullRequestComment = async () => {
     owner,
     repo,
     issue_number: number,
-    body: "Testa comentário"
+    body: comment
   });
 }
 
@@ -252,9 +275,15 @@ const run = async () => {
 
     status += fromDir(root, 'package.json', callback_npm);
     status += fromDir(root, '.eslintrc.json', callback_eslint);
-    console.log(`exit code: ${status}`);
 
-    await createPullRequestComment();
+    console.log(`exit code: ${status}`);
+    console.log("All errors", eslintOutcomes);
+
+    const feedbackMessage = buildFeedbackMessage(eslintOutcomes);
+
+    console.log('feedbackMessage', feedbackMessage);
+
+    await createPullRequestComment(feedbackMessage);
 
     process.exit(status);
   }
