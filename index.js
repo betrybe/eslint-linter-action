@@ -6,7 +6,7 @@ const github = require('@actions/github');
 
 const root = process.env.GITHUB_WORKSPACE || process.cwd()
 
-console.log('root: ', root)
+core.debug('root: ', root)
 
 function fromDir(startPath, filter, callback) {
   if (!fs.existsSync(startPath)) {
