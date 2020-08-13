@@ -96,7 +96,7 @@ const run = async () => {
 
     const feedbackMessage = buildFeedbackMessage(eslintOutcomes);
 
-    console.log('feedbackMessage', feedbackMessage);
+    console.log('feedbackMessage\n', feedbackMessage);
 
     await createPullRequestComment(feedbackMessage);
 
