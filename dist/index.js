@@ -229,27 +229,32 @@ const callback_eslint = (file) => {
   return eslintProcess.status;
 }
 
+const createPullRequestComment = async () => {
+  const token = core.getInput('token', { required: true });
+  const octokit = github.getOctokit(token);
+  const { owner, repo, number } = github.context.issue;
+
+  console.log('owner', owner);
+  console.log('repo', repo);
+  console.log('number', number);
+
+  await octokit.issues.createComment({
+    owner,
+    repo,
+    issue_number: number,
+    body: "Testa comentário"
+  });
+}
+
 const run = async () => {
   try {
-    const token = core.getInput('token', { required: true });
-    const octokit = github.getOctokit(token);
-    const { owner, repo, number } = github.context.issue;
-    console.log('owner', owner);
-    console.log('repo', repo);
-    console.log('number', number);
-
     let status = 0;
 
     status += fromDir(root, 'package.json', callback_npm);
     status += fromDir(root, '.eslintrc.json', callback_eslint);
     console.log(`exit code: ${status}`);
 
-    await octokit.issues.createComment({
-      owner,
-      repo,
-      issue_number: number,
-      body: "Testa comentário"
-    });
+    await createPullRequestComment();
 
     process.exit(status);
   }
