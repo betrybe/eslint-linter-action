@@ -162,16 +162,15 @@ const getErrorsCount = (eslintOutcomes) => (
 
 const buildErrorMessage = ({ line, message }) => `- Linha **${line}**: ${message}`;
 
-const buildFileSection = ({ filePath }, root) => {
-  const relativePath = filePath.replace(root, '');
+const buildFileSection = (filePath) => `#### Arquivo \`${filePath}\``;
 
-  return `#### Arquivo \`${relativePath}\``;
-};
+const buildFileErrors = ({ errorCount, filePath, messages }, root) => {
+  if (errorCount === 0) return '';
 
-const buildFileErrors = (currentFile, root) => {
-  if (currentFile.errorCount === 0) return '';
-  const fileSection = `${buildFileSection(currentFile, root)}\n\n`;
-  return (currentFile.messages.reduce((acc, error) => acc + `${buildErrorMessage(error)}\n`, fileSection));
+  const relativePathFile = filePath.replace(root, '');
+  const fileSection = `${buildFileSection(relativePathFile)}\n\n`;
+
+  return messages.reduce((acc, error) => acc + `${buildErrorMessage(error)}\n`, fileSection);
 }
 
 const listErrors = (eslintOutcomes, root) => (
@@ -189,6 +188,7 @@ const getSummaryMessage = (eslintOutcomes) => {
 const buildFeedbackMessage = (eslintOutcomes, root) => {
   const summaryMessage = getSummaryMessage(eslintOutcomes);
   const teste = listErrors(eslintOutcomes, root);
+
   return `${summaryMessage}\n\n${teste}`;
 }
 
