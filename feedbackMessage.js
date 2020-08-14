@@ -29,9 +29,9 @@ const getSummaryMessage = (eslintOutcomes) => {
 
 const buildFeedbackMessage = (eslintOutcomes, root) => {
   const summaryMessage = getSummaryMessage(eslintOutcomes);
-  const teste = listErrors(eslintOutcomes, root);
+  const errors = listErrors(eslintOutcomes, root);
 
-  return `${summaryMessage}\n\n${teste}`;
+  return `${summaryMessage}\n\n${errors}`;
 }
 
 module.exports = buildFeedbackMessage;
