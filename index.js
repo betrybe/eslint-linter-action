@@ -59,14 +59,14 @@ const runEslint = (file) => {
     { cwd: path.dirname(file) }
   );
   if (eslintProcess.error) {
-    console.log(`error: ${eslintProcess.error.message}`);
+    console.log(`eslint error: ${eslintProcess.error.message}`);
   }
   if (eslintProcess.stderr) {
-    console.log(`stderr: ${eslintProcess.stderr}`);
+    console.log(`eslint stderr: ${eslintProcess.stderr}`);
   }
   eslintOutcomes = eslintOutcomes.concat(JSON.parse(eslintProcess.stdout));
-  console.log(`stdout: ${eslintProcess.stdout}`);
-  console.log(`status: ${eslintProcess.status}`);
+  console.log(`eslint stdout: ${eslintProcess.stdout}`);
+  console.log(`eslint status: ${eslintProcess.status}`);
   return eslintProcess.status;
 }
 
