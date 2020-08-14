@@ -276,16 +276,14 @@ const runEslint = (file) => {
   return eslintProcess.status;
 }
 
-const createPullRequestComment = async (comment) => {
-  const token = core.getInput('token', { required: true });
-  const octokit = github.getOctokit(token);
+const createPullRequestComment = async (client, comment) => {
   const { owner, repo, number } = github.context.issue;
 
   console.log('owner', owner);
   console.log('repo', repo);
   console.log('number', number);
 
-  await octokit.issues.createComment({
+  await client.issues.createComment({
     owner,
     repo,
     issue_number: number,
@@ -295,6 +293,8 @@ const createPullRequestComment = async (comment) => {
 
 const run = async () => {
   try {
+    const token = core.getInput('token', { required: true });
+    const client = github.getOctokit(token);
     let status = 0;
 
     status += fromDir(root, 'package.json', runNpm);
@@ -307,7 +307,7 @@ const run = async () => {
 
     console.log('feedbackMessage\n', feedbackMessage);
 
-    await createPullRequestComment(feedbackMessage);
+    await createPullRequestComment(client, feedbackMessage);
 
     process.exit(status);
   }
