@@ -239,7 +239,7 @@ function fromDir(startPath, filter, callback) {
   };
 };
 
-const callback_npm = (file) => {
+const runNpm = (file) => {
   console.log('-- found: ', file);
   const npmProcess = spawnSync(
     'npm',
@@ -257,7 +257,7 @@ const callback_npm = (file) => {
   return npmProcess.status;
 }
 
-const callback_eslint = (file) => {
+const runEslint = (file) => {
   console.log('-- found: ', file);
   const eslintProcess = spawnSync(
     `npx`,
@@ -297,8 +297,8 @@ const run = async () => {
   try {
     let status = 0;
 
-    status += fromDir(root, 'package.json', callback_npm);
-    status += fromDir(root, '.eslintrc.json', callback_eslint);
+    status += fromDir(root, 'package.json', runNpm);
+    status += fromDir(root, '.eslintrc.json', runEslint);
 
     console.log(`exit code: ${status}`);
     console.log("All errors", eslintOutcomes);
