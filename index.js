@@ -11,23 +11,26 @@ let eslintOutcomes = [];
 console.log('root: ', root)
 
 function fromDir(startPath, filter, callback) {
+  let executionStatus = 0;
   if (!fs.existsSync(startPath)) {
     console.log("no dir ", startPath);
     return;
   }
-  var files = fs.readdirSync(startPath);
-  for (var i = 0; i < files.length; i++) {
-    var filename = path.join(startPath, files[i]);
+  const files = fs.readdirSync(startPath);
+  for (let i = 0; i < files.length; i++) {
+    const filename = path.join(startPath, files[i]);
     if (filename.indexOf("node_modules") === -1) {
-      var stat = fs.lstatSync(filename);
+      const stat = fs.lstatSync(filename);
       if (stat.isDirectory()) {
-        fromDir(filename, filter, callback);
+        executionStatus += fromDir(filename, filter, callback);
       }
       else if (filename.indexOf(filter) >= 0) {
-        return callback(filename);
+        executionStatus += callback(filename);
       };
     };
   };
+
+  return executionStatus;
 };
 
 const runNpm = (file) => {
