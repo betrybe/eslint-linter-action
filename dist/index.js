@@ -279,21 +279,11 @@ const runEslint = (file) => {
   return eslintProcess.status;
 }
 
-const createPullRequestComment = async (client, comment) => {
-  const { owner, repo, number } = github.context.issue;
-
-  await client.issues.createComment({
-    owner,
-    repo,
-    issue_number: number,
-    body: comment
-  });
-}
-
 const run = async () => {
   try {
     const token = core.getInput('token', { required: true });
     const client = github.getOctokit(token);
+    const { owner, repo, number } = github.context.issue;
     let status = 0;
 
     status += fromDir(root, 'package.json', runNpm);
@@ -306,7 +296,12 @@ const run = async () => {
 
     console.log('feedbackMessage\n', feedbackMessage);
 
-    await createPullRequestComment(client, feedbackMessage);
+    await client.issues.createComment({
+      owner,
+      repo,
+      issue_number: number,
+      body: feedbackMessage
+    });
 
     process.exit(status);
   }
