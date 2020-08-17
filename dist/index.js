@@ -282,10 +282,6 @@ const runEslint = (file) => {
 const createPullRequestComment = async (client, comment) => {
   const { owner, repo, number } = github.context.issue;
 
-  console.log('owner', owner);
-  console.log('repo', repo);
-  console.log('number', number);
-
   await client.issues.createComment({
     owner,
     repo,
