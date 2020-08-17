@@ -20,7 +20,9 @@
   "homepage": "https://github.com/betrybe/linter-evaluator-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.4",
-    "@actions/github": "^4.0.0",
+    "@actions/github": "^4.0.0"
+  },
+  "devDependencies": {
     "@zeit/ncc": "^0.22.3"
   }
 }
