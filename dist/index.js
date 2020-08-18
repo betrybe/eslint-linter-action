@@ -224,8 +224,8 @@ function fromDir(startPath, filter, callback) {
   let executionStatus = 0;
 
   if (!fs.existsSync(startPath)) {
-    console.log('no dir ', startPath);
-    return executionStatus;
+    console.log('Path does not exist: ', startPath);
+    return 1;
   }
 
   const files = fs.readdirSync(startPath);
