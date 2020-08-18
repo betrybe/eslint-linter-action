@@ -12,7 +12,7 @@ function fromDir(startPath, filter, callback) {
   let executionStatus = 0;
 
   if (!fs.existsSync(startPath)) {
-    console.log('Path does not exist: ', startPath);
+    console.log('Path does not exist:', startPath);
     return 1;
   }
 
@@ -32,8 +32,19 @@ function fromDir(startPath, filter, callback) {
   return executionStatus;
 }
 
+const logProcessConclusion = ({ error, status, stderr = '', stdout = '' }) => {
+  const parsedStderr = stderr.toString();
+  const parsedStdout = stdout.toString();
+
+  if (error) console.log('error:', error.message);
+  if (parsedStderr) console.log('stderr:', parsedStderr);
+
+  console.log('stdout:', parsedStdout);
+  console.log('status:', status);
+};
+
 const runNpm = (file) => {
-  console.log('-- found: ', file);
+  console.log('-- found:', file);
 
   const npmProcess = spawnSync(
     'npm',
@@ -41,21 +52,13 @@ const runNpm = (file) => {
     { cwd: path.dirname(file) },
   );
 
-  if (npmProcess.error) {
-    console.log(`npm error: ${npmProcess.error.message}`);
-  }
-  if (npmProcess.stderr) {
-    console.log(`npm stderr: ${npmProcess.stderr}`);
-  }
-
-  console.log(`npm stdout: ${npmProcess.stdout}`);
-  console.log(`npm status: ${npmProcess.status}`);
+  logProcessConclusion(npmProcess);
 
   return npmProcess.status;
 };
 
 const runEslint = (file) => {
-  console.log('-- found: ', file);
+  console.log('-- found:', file);
 
   const eslintProcess = spawnSync(
     'npx',
@@ -63,17 +66,9 @@ const runEslint = (file) => {
     { cwd: path.dirname(file) },
   );
 
-  if (eslintProcess.error) {
-    console.log(`eslint error: ${eslintProcess.error.message}`);
-  }
-  if (eslintProcess.stderr) {
-    console.log(`eslint stderr: ${eslintProcess.stderr}`);
-  }
+  logProcessConclusion(eslintProcess);
 
   eslintOutcomes = eslintOutcomes.concat(JSON.parse(eslintProcess.stdout));
-
-  console.log(`eslint stdout: ${eslintProcess.stdout}`);
-  console.log(`eslint status: ${eslintProcess.status}`);
 
   return eslintProcess.status;
 };
