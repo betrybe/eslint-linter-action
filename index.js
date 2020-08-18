@@ -55,7 +55,7 @@ const runEslint = (file) => {
   console.log('-- found: ', file);
   const eslintProcess = spawnSync(
     `npx`,
-    ['eslint', '-f', 'json' ,'--no-inline-config', '-c', path.basename(file), '.'],
+    ['eslint', '-f', 'json' ,'--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
     { cwd: path.dirname(file) }
   );
   if (eslintProcess.error) {
