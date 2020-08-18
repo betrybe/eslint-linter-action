@@ -1,36 +1,12 @@
 const path = require('path');
-const fs = require('fs');
 const { spawnSync } = require('child_process');
 const core = require('@actions/core');
 const github = require('@actions/github');
 const buildFeedbackMessage = require('./feedbackMessage');
+const fromDir = require('./fromDir');
 
 const root = process.env.GITHUB_WORKSPACE || process.cwd();
 let eslintOutcomes = [];
-
-function fromDir(startPath, filter, callback) {
-  let executionStatus = 0;
-
-  if (!fs.existsSync(startPath)) {
-    console.log('Path does not exist:', startPath);
-    return 1;
-  }
-
-  const files = fs.readdirSync(startPath);
-
-  for (let i = 0; i < files.length; i += 1) {
-    const filename = path.join(startPath, files[i]);
-
-    if (filename.indexOf('node_modules') !== -1) continue;
-
-    const stat = fs.lstatSync(filename);
-
-    if (stat.isDirectory()) executionStatus += fromDir(filename, filter, callback);
-    else if (filename.indexOf(filter) >= 0) executionStatus += callback(filename);
-  }
-
-  return executionStatus;
-}
 
 const logProcessConclusion = ({ error, status, stderr = '', stdout = '' }) => {
   const parsedStderr = stderr.toString();
