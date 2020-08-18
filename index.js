@@ -8,7 +8,7 @@ const buildFeedbackMessage = require('./feedbackMessage');
 const root = process.env.GITHUB_WORKSPACE || process.cwd();
 let eslintOutcomes = [];
 
-core.debug('root: ', root);
+core.info('root: ', root);
 
 function fromDir(startPath, filter, callback) {
   let executionStatus = 0;
