@@ -13,12 +13,12 @@ function fromDir(startPath, filter, callback) {
 
   if (!fs.existsSync(startPath)) {
     console.log('no dir ', startPath);
-    return;
+    return executionStatus;
   }
 
   const files = fs.readdirSync(startPath);
 
-  for (let i = 0; i < files.length; i++) {
+  for (let i = 0; i < files.length; i += 1) {
     const filename = path.join(startPath, files[i]);
 
     if (filename.indexOf('node_modules') !== -1) continue;
@@ -27,10 +27,10 @@ function fromDir(startPath, filter, callback) {
 
     if (stat.isDirectory()) executionStatus += fromDir(filename, filter, callback);
     else if (filename.indexOf(filter) >= 0) executionStatus += callback(filename);
-  };
+  }
 
   return executionStatus;
-};
+}
 
 const runNpm = (file) => {
   console.log('-- found: ', file);
@@ -38,7 +38,7 @@ const runNpm = (file) => {
   const npmProcess = spawnSync(
     'npm',
     ['ci'],
-    { cwd: path.dirname(file) }
+    { cwd: path.dirname(file) },
   );
 
   if (npmProcess.error) {
@@ -52,15 +52,15 @@ const runNpm = (file) => {
   console.log(`npm status: ${npmProcess.status}`);
 
   return npmProcess.status;
-}
+};
 
 const runEslint = (file) => {
   console.log('-- found: ', file);
 
   const eslintProcess = spawnSync(
     'npx',
-    ['eslint', '-f', 'json' ,'--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
-    { cwd: path.dirname(file) }
+    ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
+    { cwd: path.dirname(file) },
   );
 
   if (eslintProcess.error) {
@@ -76,7 +76,7 @@ const runEslint = (file) => {
   console.log(`eslint status: ${eslintProcess.status}`);
 
   return eslintProcess.status;
-}
+};
 
 const run = async () => {
   try {
@@ -99,14 +99,13 @@ const run = async () => {
       owner,
       repo,
       issue_number: number,
-      body: feedbackMessage
+      body: feedbackMessage,
     });
 
     process.exit(status);
-  }
-  catch(error) {
+  } catch (error) {
     core.setFailed(error.message);
   }
-}
+};
 
 run();

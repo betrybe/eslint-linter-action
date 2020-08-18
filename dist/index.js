@@ -170,8 +170,8 @@ const buildFileErrors = ({ errorCount, filePath, messages }, root) => {
   const relativePathFile = filePath.replace(root, '');
   const fileSection = `${buildFileSection(relativePathFile)}\n\n`;
 
-  return messages.reduce((acc, error) => acc + `${buildErrorMessage(error)}\n`, fileSection);
-}
+  return messages.reduce((acc, error) => `${acc}${buildErrorMessage(error)}\n`, fileSection);
+};
 
 const listErrors = (eslintOutcomes, root) => (
   eslintOutcomes.reduce((acc, currentFile) => acc + buildFileErrors(currentFile, root), '')
@@ -183,7 +183,7 @@ const getSummaryMessage = (eslintOutcomes) => {
   if (errorsCount === 0) return '### Nenhum erro encontrado.';
   if (errorsCount === 1) return '### Foi encontrado 1 erro.';
   return `### Foram encontrados ${errorsCount} erros.`;
-}
+};
 
 const buildFeedbackMessage = (eslintOutcomes, root) => {
   let feedbackMessage = getSummaryMessage(eslintOutcomes);
@@ -193,7 +193,7 @@ const buildFeedbackMessage = (eslintOutcomes, root) => {
   }
 
   return feedbackMessage;
-}
+};
 
 module.exports = buildFeedbackMessage;
 
@@ -225,12 +225,12 @@ function fromDir(startPath, filter, callback) {
 
   if (!fs.existsSync(startPath)) {
     console.log('no dir ', startPath);
-    return;
+    return executionStatus;
   }
 
   const files = fs.readdirSync(startPath);
 
-  for (let i = 0; i < files.length; i++) {
+  for (let i = 0; i < files.length; i += 1) {
     const filename = path.join(startPath, files[i]);
 
     if (filename.indexOf('node_modules') !== -1) continue;
@@ -239,10 +239,10 @@ function fromDir(startPath, filter, callback) {
 
     if (stat.isDirectory()) executionStatus += fromDir(filename, filter, callback);
     else if (filename.indexOf(filter) >= 0) executionStatus += callback(filename);
-  };
+  }
 
   return executionStatus;
-};
+}
 
 const runNpm = (file) => {
   console.log('-- found: ', file);
@@ -250,7 +250,7 @@ const runNpm = (file) => {
   const npmProcess = spawnSync(
     'npm',
     ['ci'],
-    { cwd: path.dirname(file) }
+    { cwd: path.dirname(file) },
   );
 
   if (npmProcess.error) {
@@ -264,15 +264,15 @@ const runNpm = (file) => {
   console.log(`npm status: ${npmProcess.status}`);
 
   return npmProcess.status;
-}
+};
 
 const runEslint = (file) => {
   console.log('-- found: ', file);
 
   const eslintProcess = spawnSync(
     'npx',
-    ['eslint', '-f', 'json' ,'--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
-    { cwd: path.dirname(file) }
+    ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
+    { cwd: path.dirname(file) },
   );
 
   if (eslintProcess.error) {
@@ -288,7 +288,7 @@ const runEslint = (file) => {
   console.log(`eslint status: ${eslintProcess.status}`);
 
   return eslintProcess.status;
-}
+};
 
 const run = async () => {
   try {
@@ -311,15 +311,14 @@ const run = async () => {
       owner,
       repo,
       issue_number: number,
-      body: feedbackMessage
+      body: feedbackMessage,
     });
 
     process.exit(status);
-  }
-  catch(error) {
+  } catch (error) {
     core.setFailed(error.message);
   }
-}
+};
 
 run();
 
