@@ -220,7 +220,7 @@ const buildFeedbackMessage = __webpack_require__(51);
 const root = process.env.GITHUB_WORKSPACE || process.cwd();
 let eslintOutcomes = [];
 
-console.log('root: ', root)
+core.debug('root: ', root);
 
 function fromDir(startPath, filter, callback) {
   let executionStatus = 0;
