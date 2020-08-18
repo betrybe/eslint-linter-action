@@ -16,7 +16,7 @@ const buildFileErrors = ({ errorCount, filePath, messages }, root) => {
 }
 
 const listErrors = (eslintOutcomes, root) => (
-  eslintOutcomes.reduce((acc, currentFile) => acc + `${buildFileErrors(currentFile, root)}\n`, '')
+  eslintOutcomes.reduce((acc, currentFile) => acc + buildFileErrors(currentFile, root), '')
 );
 
 const getSummaryMessage = (eslintOutcomes) => {
@@ -28,10 +28,13 @@ const getSummaryMessage = (eslintOutcomes) => {
 }
 
 const buildFeedbackMessage = (eslintOutcomes, root) => {
-  const summaryMessage = getSummaryMessage(eslintOutcomes);
-  const errors = listErrors(eslintOutcomes, root);
+  let feedbackMessage = getSummaryMessage(eslintOutcomes);
 
-  return `${summaryMessage}\n\n${errors}`;
+  if (feedbackMessage !== '### Nenhum erro encontrado.') {
+    feedbackMessage = `${feedbackMessage}\n\n${listErrors(eslintOutcomes, root)}`;
+  }
+
+  return feedbackMessage;
 }
 
 module.exports = buildFeedbackMessage;
