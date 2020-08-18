@@ -13,13 +13,13 @@ console.log('root: ', root)
 function fromDir(startPath, filter, callback) {
   let executionStatus = 0;
   if (!fs.existsSync(startPath)) {
-    console.log("no dir ", startPath);
+    console.log('no dir ', startPath);
     return;
   }
   const files = fs.readdirSync(startPath);
   for (let i = 0; i < files.length; i++) {
     const filename = path.join(startPath, files[i]);
-    if (filename.indexOf("node_modules") === -1) {
+    if (filename.indexOf('node_modules') === -1) {
       const stat = fs.lstatSync(filename);
       if (stat.isDirectory()) {
         executionStatus += fromDir(filename, filter, callback);
@@ -54,7 +54,7 @@ const runNpm = (file) => {
 const runEslint = (file) => {
   console.log('-- found: ', file);
   const eslintProcess = spawnSync(
-    `npx`,
+    'npx',
     ['eslint', '-f', 'json' ,'--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
     { cwd: path.dirname(file) }
   );
@@ -80,12 +80,12 @@ const run = async () => {
     status += fromDir(root, 'package.json', runNpm);
     status += fromDir(root, '.eslintrc.json', runEslint);
 
-    console.log(`exit code: ${status}`);
-    console.log("All errors", eslintOutcomes);
+    console.log('Exit code:', status);
+    console.log('All errors:', eslintOutcomes);
 
     const feedbackMessage = buildFeedbackMessage(eslintOutcomes, root);
 
-    console.log('feedbackMessage\n', feedbackMessage);
+    console.log('Feedback message:\n', feedbackMessage);
 
     await client.issues.createComment({
       owner,
