@@ -81,7 +81,7 @@ const run = async () => {
     status += fromDir(root, '.eslintrc.json', runEslint);
 
     console.log('Exit code:', status);
-    console.log('All errors:', eslintOutcomes);
+    core.info('All errors:', eslintOutcomes);
 
     const feedbackMessage = buildFeedbackMessage(eslintOutcomes, root);
 
