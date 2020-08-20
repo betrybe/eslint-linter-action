@@ -104,6 +104,50 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
+/***/ 48:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const fs = __webpack_require__(747);
+const path = __webpack_require__(622);
+
+const readFiles = (startPath) => {
+  if (!fs.existsSync(startPath)) {
+    console.log('Path does not exist:', startPath);
+
+    return [];
+  }
+
+  return fs.readdirSync(startPath);
+};
+
+const findFilesBy = (startDirectory, stringSearch) => {
+  const directories = [startDirectory];
+  const foundFiles = [];
+
+  while (directories.length > 0) {
+    const currentDirectory = directories.pop();
+    const files = readFiles(currentDirectory);
+
+    files.forEach((file) => {
+      const filename = path.join(currentDirectory, file);
+
+      if (filename.indexOf('node_modules') !== -1) return;
+
+      const stat = fs.lstatSync(filename);
+
+      if (stat.isDirectory()) directories.push(filename);
+      else if (filename.indexOf(stringSearch) >= 0) foundFiles.push(filename);
+    });
+  }
+
+  return foundFiles;
+};
+
+module.exports = findFilesBy;
+
+
+/***/ }),
+
 /***/ 49:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -210,96 +254,25 @@ module.exports = require("os");
 /***/ 104:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-const path = __webpack_require__(622);
-const fs = __webpack_require__(747);
-const { spawnSync } = __webpack_require__(129);
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
 const buildFeedbackMessage = __webpack_require__(51);
-
-const root = process.env.GITHUB_WORKSPACE || process.cwd();
-let eslintOutcomes = [];
-
-function fromDir(startPath, filter, callback) {
-  let executionStatus = 0;
-
-  if (!fs.existsSync(startPath)) {
-    console.log('Path does not exist:', startPath);
-    return 1;
-  }
-
-  const files = fs.readdirSync(startPath);
-
-  for (let i = 0; i < files.length; i += 1) {
-    const filename = path.join(startPath, files[i]);
-
-    if (filename.indexOf('node_modules') !== -1) continue;
-
-    const stat = fs.lstatSync(filename);
-
-    if (stat.isDirectory()) executionStatus += fromDir(filename, filter, callback);
-    else if (filename.indexOf(filter) >= 0) executionStatus += callback(filename);
-  }
-
-  return executionStatus;
-}
-
-const logProcessConclusion = ({ error, status, stderr = '', stdout = '' }) => {
-  const parsedStderr = stderr.toString();
-  const parsedStdout = stdout.toString();
-
-  if (error) console.log('error:', error.message);
-  if (parsedStderr) console.log('stderr:', parsedStderr);
-
-  console.log('stdout:', parsedStdout);
-  console.log('status:', status);
-};
-
-const runNpm = (file) => {
-  console.log('-- found:', file);
-
-  const npmProcess = spawnSync(
-    'npm',
-    ['ci'],
-    { cwd: path.dirname(file) },
-  );
-
-  logProcessConclusion(npmProcess);
-
-  return npmProcess.status;
-};
-
-const runEslint = (file) => {
-  console.log('-- found:', file);
-
-  const eslintProcess = spawnSync(
-    'npx',
-    ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
-    { cwd: path.dirname(file) },
-  );
-
-  logProcessConclusion(eslintProcess);
-
-  eslintOutcomes = eslintOutcomes.concat(JSON.parse(eslintProcess.stdout));
-
-  return eslintProcess.status;
-};
+const runEslint = __webpack_require__(250);
+const runNpm = __webpack_require__(287);
 
 const run = async () => {
   try {
+    const root = process.env.GITHUB_WORKSPACE || process.cwd();
     const token = core.getInput('token', { required: true });
     const client = github.getOctokit(token);
     const { owner, repo, number } = github.context.issue;
-    let status = 0;
-
-    status += fromDir(root, 'package.json', runNpm);
-    status += fromDir(root, '.eslintrc.json', runEslint);
+    const npmStatus = runNpm(root);
+    const { status: eslintStatus, outcomes: eslintOutcomes } = runEslint(root);
+    const status = npmStatus + eslintStatus;
+    const feedbackMessage = buildFeedbackMessage(eslintOutcomes, root);
 
     console.log('Exit code:', status);
     console.log('All errors:', eslintOutcomes);
-
-    const feedbackMessage = buildFeedbackMessage(eslintOutcomes, root);
-
     console.log('Feedback message:\n', feedbackMessage);
 
     await client.issues.createComment({
@@ -656,6 +629,52 @@ module.exports = require("https");
 
 /***/ }),
 
+/***/ 234:
+/***/ (function(module) {
+
+const logProcessConclusion = ({ error, status, stderr = '', stdout = '' }) => {
+  const parsedStderr = stderr.toString();
+  const parsedStdout = stdout.toString();
+  const logMessages = [];
+
+  if (error) logMessages.push(`error: ${error.message}`);
+  if (parsedStderr) logMessages.push(`stderr: ${parsedStderr}`);
+
+  logMessages.push(`stdout: ${parsedStdout}`)
+  logMessages.push(`status: ${status}`)
+
+  console.log(logMessages.join('\n'));
+};
+
+module.exports = logProcessConclusion;
+
+
+/***/ }),
+
+/***/ 250:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const findFilesBy = __webpack_require__(48);
+const runEslintWithConfigFile = __webpack_require__(834);
+
+const runEslint = (root) => {
+  const files = findFilesBy(root, '.eslintrc.json');
+
+  return files.reduce((acc, file) => {
+    const { status, outcomes} = runEslintWithConfigFile(file);
+
+    return {
+      status: acc.status + status,
+      outcomes: acc.outcomes.concat(outcomes),
+    };
+  }, { status: 0, outcomes: [] });
+};
+
+module.exports = runEslint;
+
+
+/***/ }),
+
 /***/ 262:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -744,6 +763,23 @@ function register (state, name, method, options) {
       }, method)()
     })
 }
+
+
+/***/ }),
+
+/***/ 287:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const findFilesBy = __webpack_require__(48);
+const runNpmOnFile = __webpack_require__(601);
+
+const runNpm = (root) => {
+  const files = findFilesBy(root, 'package.json');
+
+  return files.reduce((executionStatus, file) => executionStatus + runNpmOnFile(file), 0);
+};
+
+module.exports = runNpm;
 
 
 /***/ }),
@@ -4273,6 +4309,32 @@ exports.HttpClient = HttpClient;
 
 /***/ }),
 
+/***/ 601:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const { spawnSync } = __webpack_require__(129);
+const path = __webpack_require__(622);
+const logProcessConclusion = __webpack_require__(234);
+
+const runNpmOnFile = (file) => {
+  console.log('-- found:', file);
+
+  const npmProcess = spawnSync(
+    'npm',
+    ['ci'],
+    { cwd: path.dirname(file) },
+  );
+
+  logProcessConclusion(npmProcess);
+
+  return npmProcess.status;
+};
+
+module.exports = runNpmOnFile;
+
+
+/***/ }),
+
 /***/ 605:
 /***/ (function(module) {
 
@@ -4636,6 +4698,33 @@ const createTokenAuth = function createTokenAuth(token) {
 
 exports.createTokenAuth = createTokenAuth;
 //# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
+/***/ 834:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const { spawnSync } = __webpack_require__(129);
+const path = __webpack_require__(622);
+const logProcessConclusion = __webpack_require__(234);
+
+const runEslintWithConfigFile = (file) => {
+  console.log('-- found:', file);
+
+  const eslintProcess = spawnSync(
+    'npx',
+    ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
+    { cwd: path.dirname(file) },
+  );
+  const outcomes = JSON.parse(eslintProcess.stdout);
+
+  logProcessConclusion(eslintProcess);
+
+  return { status: eslintProcess.status , outcomes };
+};
+
+module.exports = runEslintWithConfigFile;
 
 
 /***/ }),

@@ -1,5 +1,5 @@
 const buildFeedbackMessage = require('../feedbackMessage');
-const noError = require('./fixtures/eslint-results/noError.json');
+const noError = require('./fixtures/eslint-results/frontEndNoError.json');
 const oneError = require('./fixtures/eslint-results/oneError.json');
 const multipleErrorsOneFile = require('./fixtures/eslint-results/multipleErrorsOneFile.json');
 const multipleErrorsMultipleFiles = require('./fixtures/eslint-results/multipleErrorsMultipleFiles.json');
