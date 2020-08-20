@@ -1,8 +1,8 @@
 {
-    "rules": {
-        "max-params": [
-            "error",
-            4
-        ]
-    }
+  "rules": {
+    "max-params": [
+      "error",
+      4
+    ]
+  }
 }

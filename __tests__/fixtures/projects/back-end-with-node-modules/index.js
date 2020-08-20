@@ -1,3 +1,3 @@
-var foo = function (x, y, z, a, b) {
-    return true;
+const foo = (x, y, z, a, b) => {
+  return true;
 }
