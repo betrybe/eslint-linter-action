@@ -1,4 +1,5 @@
 jest.mock('child_process');
+
 const { spawnSync } = require('child_process');
 const runNpmOnFile = require('../runNpmOnFile');
 
