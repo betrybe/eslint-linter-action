@@ -41,10 +41,19 @@ describe('Find files in directory', () => {
   });
 
   test('Disregards files in node_modules directory', () => {
-    const startPath = `${rootDirectory}/__tests__/fixtures/projects/back-end-with-node-modules`;
-    const givenResult = findFilesBy(startPath, 'package.json');
-    const expectedResult = [`${startPath}/package.json`];
+    const fs = require('fs');
 
-    expect(givenResult).toEqual(expectedResult);
+    jest
+      .spyOn(fs, 'readdirSync')
+      .mockImplementation(() => ['package.json']);
+
+    jest
+      .spyOn(fs, 'existsSync')
+      .mockImplementation(() => true);
+
+    const startPath = '/my-project/node_modules/my-package';
+    const givenResult = findFilesBy(startPath, 'package.json');
+
+    expect(givenResult).toEqual([]);
   })
 });
