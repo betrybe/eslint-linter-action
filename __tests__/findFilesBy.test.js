@@ -45,11 +45,11 @@ describe('Find files in directory', () => {
 
     jest
       .spyOn(fs, 'readdirSync')
-      .mockImplementation(() => ['package.json']);
+      .mockReturnValue(['package.json']);
 
     jest
       .spyOn(fs, 'existsSync')
-      .mockImplementation(() => true);
+      .mockReturnValue(true);
 
     const startPath = '/my-project/node_modules/my-package';
     const givenResult = findFilesBy(startPath, 'package.json');
