@@ -661,7 +661,7 @@ const runEslint = (root) => {
   const files = findFilesBy(root, '.eslintrc.json');
 
   return files.reduce((acc, file) => {
-    const { status, outcomes} = runEslintWithConfigFile(file);
+    const { status, outcomes } = runEslintWithConfigFile(file);
 
     return {
       status: acc.status + status,
