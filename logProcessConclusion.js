@@ -1,6 +1,6 @@
-const logProcessConclusion = ({ error, status, stderr = '', stdout = '' }) => {
-  const parsedStderr = stderr.toString();
-  const parsedStdout = stdout.toString();
+const logProcessConclusion = ({ error, status, stderr, stdout }) => {
+  const parsedStderr = stderr ? stderr.toString() : '';
+  const parsedStdout = stdout ? stdout.toString() : '';
   const logMessages = [];
 
   if (error) logMessages.push(`error: ${error.message}`);
