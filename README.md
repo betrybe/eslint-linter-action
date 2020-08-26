@@ -56,7 +56,7 @@ git add dist
 
 Users shouldn't consume the action from master since that would be latest code and actions can break compatibility between major versions.
 
-Checkin to the v1 release branch
+Checking to the v1 release branch
 
 ```bash
 $ git checkout -b v1
