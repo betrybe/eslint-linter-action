@@ -17,7 +17,7 @@ This action accepts the following configuration parameters via `with:`
 ```yaml
 steps:
   - name: Static code analysis step
-    uses: betrybe/linter-evaluator-action
+    uses: betrybe/eslint-linter-action
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -76,7 +76,7 @@ See the [versioning documentation](https://github.com/actions/toolkit/blob/maste
 You can now consume the action by referencing the v1 branch
 
 ```yaml
-uses: betrybe/linter-evaluator-action@v1
+uses: betrybe/eslint-linter-action@v1
 ```
 
-See the [actions tab](https://github.com/betrybe/linter-evaluator-action/actions) for runs of this action! :rocket:
+See the [actions tab](https://github.com/betrybe/eslint-linter-action/actions) for runs of this action! :rocket:
