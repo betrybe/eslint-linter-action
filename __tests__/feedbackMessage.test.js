@@ -7,11 +7,17 @@ const multipleErrorsMultipleFiles = require('./fixtures/eslint-results/multipleE
 describe('Feedback message', () => {
   describe('No error is found', () => {
     test('When there is no file to be evaluated, a no error encountered message is returned', () => {
-      expect(buildFeedbackMessage([], './')).toBe('### Nenhum erro encontrado.')
+      expect(buildFeedbackMessage([], './')).toBe(
+        '### Nenhum erro encontrado.\n' +
+        '### Nenhum aviso encontrado.'
+      )
     });
 
     test('When there are files to be evaluated, a no error encountered message is returned', () => {
-      expect(buildFeedbackMessage(noError, './')).toBe('### Nenhum erro encontrado.')
+      expect(buildFeedbackMessage(noError, './')).toBe(
+        '### Nenhum erro encontrado.\n' +
+        '### Nenhum aviso encontrado.'
+      )
     });
   });
 
@@ -21,7 +27,9 @@ describe('Feedback message', () => {
       '\n' +
       '#### Arquivo `/my-project/index.js`\n' +
       '\n' +
-      '- Linha **1**: Function \'isPentagon\' has too many parameters (5). Maximum allowed is 4.\n'
+      '- Linha **1**: Function \'isPentagon\' has too many parameters (5). Maximum allowed is 4.\n' +
+      '\n' +
+      '### Nenhum aviso encontrado.'
     );
   });
 
@@ -35,7 +43,9 @@ describe('Feedback message', () => {
         '- Linha **3**: \'name\' is missing in props validation\n' +
         '- Linha **3**: `Hello, ` must be placed on a new line\n' +
         '- Linha **3**: `{name}` must be placed on a new line\n' +
-        '- Linha **5**: Missing semicolon.\n'
+        '- Linha **5**: Missing semicolon.\n' +
+        '\n' +
+        '### Nenhum aviso encontrado.'
       );
     });
 
@@ -51,7 +61,9 @@ describe('Feedback message', () => {
         '' +
         '#### Arquivo `/my-react-project/src/components/Greeting.js`\n' +
         '\n' +
-        '- Linha **3**: \'name\' is missing in props validation\n'
+        '- Linha **3**: \'name\' is missing in props validation\n' +
+        '\n' +
+        '### Nenhum aviso encontrado.'
       );
     });
   });
@@ -68,7 +80,9 @@ describe('Feedback message', () => {
       '' +
       '#### Arquivo `/src/components/Greeting.js`\n' +
       '\n' +
-      '- Linha **3**: \'name\' is missing in props validation\n'
+      '- Linha **3**: \'name\' is missing in props validation\n' +
+      '\n' +
+      '### Nenhum aviso encontrado.'
     );
   });
 });
