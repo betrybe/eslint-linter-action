@@ -200,15 +200,15 @@ function onceStrict (fn) {
 /***/ 51:
 /***/ (function(module) {
 
-const countageFieldNameByType = (issueType) => issueType === 'erro' ? 'errorCount' : 'warningCount';
+const countageFieldNameByType = (issueType) => (issueType === 'erro' ? 'errorCount' : 'warningCount');
 
-const issueSeverityToConsider = (issueType) => issueType === 'erro' ? 2 : 1;
+const issueSeverityToConsider = (issueType) => (issueType === 'erro' ? 2 : 1);
 
 const getIssuesCount = (eslintOutcomes, issueType) => {
   const countageToConsider = countageFieldNameByType(issueType);
 
   return eslintOutcomes.reduce((acc, eslintOutcome) => acc + eslintOutcome[countageToConsider], 0);
-}
+};
 
 const buildIssueMessage = ({ line, message }) => `- Linha **${line}**: ${message}`;
 
@@ -218,7 +218,7 @@ const filterMessagesByIssueType = (messages, issueType) => {
   const severityToConsider = issueSeverityToConsider(issueType);
 
   return messages.filter(({ severity }) => severity === severityToConsider);
-}
+};
 
 const buildFileIssues = (eslintOutcomeOnFile, root, issueType) => {
   const countageTypeToConsider = countageFieldNameByType(issueType);
@@ -254,7 +254,7 @@ const buildFeedbackByIssueType = (eslintOutcomes, root, issueType) => {
   }
 
   return feedbackMessage;
-}
+};
 
 const buildFeedbackMessage = (eslintOutcomes, root) => {
   const issueTypes = ['erro', 'aviso'];
