@@ -1,6 +1,6 @@
-# GitHub Action: Linter evaluator action
+# ESLint Linter Action
 
-A GitHub action that evaluates projects with [eslint](https://eslint.org/) and comments the evaluation outcome on the student's pull request.
+A GitHub action that evaluates projects with [ESLint](https://eslint.org/) and comments the evaluation outcome on the student's pull request.
 
 ## Inputs
 
