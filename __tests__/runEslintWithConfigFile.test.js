@@ -16,7 +16,15 @@ describe('Running eslint', () => {
     expect(receivedStatus).toStrictEqual({ status: 0, outcomes: eslintResultWithoutError });
     expect(spawnSync).toHaveBeenCalledWith(
       'npx',
-      ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', '.eslintrc.json', '.'],
+      [
+        'eslint',
+        '-f', 'json',
+        '--no-inline-config',
+        '--ext', '.js, .jsx',
+        '--no-error-on-unmatched-pattern',
+        '-c', '.eslintrc.json',
+        '.'
+      ],
       { cwd: packageDirectory },
     );
   });
@@ -33,7 +41,15 @@ describe('Running eslint', () => {
     expect(receivedStatus).toStrictEqual({ status: 0, outcomes: emptyEslintResult });
     expect(spawnSync).toHaveBeenCalledWith(
       'npx',
-      ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', '.eslintrc.json', '.'],
+      [
+        'eslint',
+        '-f', 'json',
+        '--no-inline-config',
+        '--ext', '.js, .jsx',
+        '--no-error-on-unmatched-pattern',
+        '-c', '.eslintrc.json',
+        '.'
+      ],
       { cwd: packageDirectory },
     );
   });
@@ -48,7 +64,15 @@ describe('Running eslint', () => {
     expect(receivedStatus).toStrictEqual({ status: 1, outcomes: eslintResultWithError });
     expect(spawnSync).toHaveBeenCalledWith(
       'npx',
-      ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', '.eslintrc.json', '.'],
+      [
+        'eslint',
+        '-f', 'json',
+        '--no-inline-config',
+        '--ext', '.js, .jsx',
+        '--no-error-on-unmatched-pattern',
+        '-c', '.eslintrc.json',
+        '.'
+      ],
       { cwd: packageDirectory },
     );
   });
