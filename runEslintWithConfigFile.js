@@ -7,7 +7,15 @@ const runEslintWithConfigFile = (file) => {
 
   const eslintProcess = spawnSync(
     'npx',
-    ['eslint', '-f', 'json', '--no-inline-config', '--no-error-on-unmatched-pattern', '-c', path.basename(file), '.'],
+    [
+      'eslint',
+      '-f', 'json',
+      '--no-inline-config',
+      '--ext', '.js, .jsx',
+      '--no-error-on-unmatched-pattern',
+      '-c', path.basename(file),
+      '.',
+    ],
     { cwd: path.dirname(file) },
   );
   const outcomes = JSON.parse(eslintProcess.stdout);
