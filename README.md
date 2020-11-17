@@ -24,7 +24,7 @@ Basic:
 
 ```yaml
 steps:
-  - uses: actions/setup-node@v1.4.3
+  - uses: actions/setup-node@v1.4.4
     with:
       node-version: '12'
   - name: Static code analysis step
@@ -37,7 +37,7 @@ Allow inline configuration comments:
 
 ```yaml
 steps:
-  - uses: actions/setup-node@v1.4.3
+  - uses: actions/setup-node@v1.4.4
     with:
       node-version: '12'
   - name: Static code analysis step
