@@ -4740,7 +4740,7 @@ const logProcessConclusion = __webpack_require__(234);
 const runEslintWithConfigFile = (file) => {
   console.log('-- found:', file);
 
-  const ignoreInlineConfig = core.getInput('ignoreInlineConfig');
+  const ignoreInlineConfig = core.getInput('ignoreInlineConfig') == 'true';
 
   const args = [
     'eslint',
