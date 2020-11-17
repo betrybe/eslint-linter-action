@@ -4732,6 +4732,7 @@ exports.createTokenAuth = createTokenAuth;
 /***/ 834:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
+const core = __webpack_require__(470);
 const { spawnSync } = __webpack_require__(129);
 const path = __webpack_require__(622);
 const logProcessConclusion = __webpack_require__(234);
@@ -4739,17 +4740,22 @@ const logProcessConclusion = __webpack_require__(234);
 const runEslintWithConfigFile = (file) => {
   console.log('-- found:', file);
 
+  const ignoreInlineConfig = core.getInput('ignoreInlineConfig');
+
+  const args = [
+    'eslint',
+    '-f', 'json',
+    '--ext', '.js, .jsx',
+    '--no-error-on-unmatched-pattern',
+    '-c', path.basename(file),
+    '.',
+  ];
+
+  if (ignoreInlineConfig) args.splice(3, 0, '--no-inline-config');
+
   const eslintProcess = spawnSync(
     'npx',
-    [
-      'eslint',
-      '-f', 'json',
-      '--no-inline-config',
-      '--ext', '.js, .jsx',
-      '--no-error-on-unmatched-pattern',
-      '-c', path.basename(file),
-      '.',
-    ],
+    args,
     { cwd: path.dirname(file) },
   );
   const outcomes = JSON.parse(eslintProcess.stdout);
