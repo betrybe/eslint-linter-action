@@ -4,6 +4,9 @@ inputs:
   token:
     description: "The GitHub token to use for making API requests"
     required: true
+  ignoreInlineConfig:
+    description: "Whether or not inline configurations should be ignored"
+    default: true
 runs:
   using: "node12"
   main: "dist/index.js"
