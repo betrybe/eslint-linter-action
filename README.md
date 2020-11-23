@@ -10,19 +10,41 @@ This action accepts the following configuration parameters via `with:`
 
   **Required**
 
-  The GitHub token to use for making API requests
+  The GitHub token to use for making API requests.
 
-## Example usage
+- `ignoreInlineConfig`
+
+  **Optional**
+
+  Set this option if inline configuration comments should be ignored on the analysis. The default is `true`.
+
+## Usage
+
+Basic:
 
 ```yaml
 steps:
-  - uses: actions/setup-node@v1.4.3
+  - uses: actions/setup-node@v1.4.4
     with:
       node-version: '12'
   - name: Static code analysis step
     uses: betrybe/eslint-linter-action@v2
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+Allow inline configuration comments:
+
+```yaml
+steps:
+  - uses: actions/setup-node@v1.4.4
+    with:
+      node-version: '12'
+  - name: Static code analysis step
+    uses: betrybe/eslint-linter-action@v2
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      ignoreInlineConfig: false
 ```
 
 Check the latest version to use [here](https://github.com/betrybe/eslint-linter-action/releases).
