@@ -69,6 +69,7 @@ steps:
     uses: betrybe/eslint-linter-action@v2
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
+      pr_number: ${{ github.event.inputs.pr_number }}
 ```
 
 Allow inline configuration comments:
@@ -82,6 +83,7 @@ steps:
     uses: betrybe/eslint-linter-action@v2
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
+      pr_number: ${{ github.event.inputs.pr_number }}
       ignoreInlineConfig: false
 ```
 
