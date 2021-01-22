@@ -2,6 +2,38 @@
 
 A GitHub action that evaluates projects with [ESLint](https://eslint.org/) and comments the evaluation outcome on the student's pull request.
 
+## Development
+
+**P.S.:** Github actions will run `dist/index.js` to execute this action, so you must to run `npm run pack`if you want apply any changes.
+
+Install the dependencies
+```bash
+$ npm install
+```
+
+Run the tests :heavy_check_mark:
+```bash
+$ npm test
+```
+
+## Package for distribution
+
+GitHub Actions will run the entry point from the action.yml. Packaging assembles the code into one file that can be checked in to Git, enabling fast and reliable execution and preventing the need to check in node_modules.
+
+Actions are run from GitHub repos. Packaging the action will create a packaged action in the dist folder.
+
+Run package
+
+```bash
+npm run pack
+```
+
+Since the packaged `index.js` is run from the dist folder.
+
+```bash
+git add dist
+```
+
 ## Inputs
 
 This action accepts the following configuration parameters via `with:`
@@ -129,36 +161,6 @@ Here follows an example for `.eslintrc.json` defined in one of the projects in y
 You can use plugins in the configuration file `.eslintrc.json`. However, beware to follow the instructions as stated in the plugin's documentation and install all dependencies associated with the plugin. There cannot be any warning raised by `npm` stating uninstalled plugin dependencies when installing a project; otherwise you will have an incomplete `ESLint` analysis environment.
 
 For more information related to configuring `ESLint` with `.eslintrc.json`, read its [guide](https://eslint.org/docs/user-guide/configuring).
-
-## Development
-
-Install the dependencies
-```bash
-$ npm install
-```
-
-Run the tests :heavy_check_mark:
-```bash
-$ npm test
-```
-
-## Package for distribution
-
-GitHub Actions will run the entry point from the action.yml. Packaging assembles the code into one file that can be checked in to Git, enabling fast and reliable execution and preventing the need to check in node_modules.
-
-Actions are run from GitHub repos. Packaging the action will create a packaged action in the dist folder.
-
-Run package
-
-```bash
-npm run pack
-```
-
-Since the packaged index.js is run from the dist folder.
-
-```bash
-git add dist
-```
 
 ## Create a release branch
 
