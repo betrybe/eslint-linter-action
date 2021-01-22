@@ -7,6 +7,9 @@ inputs:
   ignoreInlineConfig:
     description: "Whether or not inline configurations should be ignored"
     default: true
+  pr_number:
+    description: 'Pull Request number that dispatched the workflow'
+    required: true
 runs:
   using: "node12"
   main: "dist/index.js"
