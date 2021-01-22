@@ -18,6 +18,12 @@ This action accepts the following configuration parameters via `with:`
 
   Set this option if inline configuration comments should be ignored on the analysis. The default is `true`.
 
+- `pr_number`
+
+  **Required**
+
+  Pull Request number that dispatched the workflow.
+
 ## Usage
 
 Basic:
