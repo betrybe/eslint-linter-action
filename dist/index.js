@@ -288,10 +288,8 @@ const runEslint = __webpack_require__(250);
 const runNpm = __webpack_require__(287);
 
 const run = async () => {
-  console.log('DEBUG: ', process.env.GITHUB_WORKSPACE, process.cwd());
   try {
     const root = process.env.GITHUB_WORKSPACE || process.cwd();
-    console.log('root: ', root);
     const token = core.getInput('token', { required: true });
     const client = github.getOctokit(token);
     const { owner, repo } = github.context.issue;
