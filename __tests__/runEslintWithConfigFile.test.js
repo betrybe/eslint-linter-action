@@ -23,7 +23,7 @@ describe('Running eslint', () => {
         'eslint',
         '-f', 'json',
         '--no-inline-config',
-        '--ext', '.js, .jsx',
+        '--ext', '.ts, .tsx, .js, .jsx',
         '--no-error-on-unmatched-pattern',
         '-c', '.eslintrc.json',
         '.'
@@ -49,7 +49,7 @@ describe('Running eslint', () => {
         'eslint',
         '-f', 'json',
         '--no-inline-config',
-        '--ext', '.js, .jsx',
+        '--ext', '.ts, .tsx, .js, .jsx',
         '--no-error-on-unmatched-pattern',
         '-c', '.eslintrc.json',
         '.'
@@ -73,7 +73,7 @@ describe('Running eslint', () => {
         'eslint',
         '-f', 'json',
         '--no-inline-config',
-        '--ext', '.js, .jsx',
+        '--ext', '.ts, .tsx, .js, .jsx',
         '--no-error-on-unmatched-pattern',
         '-c', '.eslintrc.json',
         '.'
@@ -96,7 +96,7 @@ describe('Running eslint', () => {
         'eslint',
         '-f', 'json',
         '--no-inline-config',
-        '--ext', '.js, .jsx',
+        '--ext', '.ts, .tsx, .js, .jsx',
         '--no-error-on-unmatched-pattern',
         '-c', '.eslintrc.json',
         '.'
@@ -118,7 +118,7 @@ describe('Running eslint', () => {
       [
         'eslint',
         '-f', 'json',
-        '--ext', '.js, .jsx',
+        '--ext', '.ts, .tsx, .js, .jsx',
         '--no-error-on-unmatched-pattern',
         '-c', '.eslintrc.json',
         '.'
