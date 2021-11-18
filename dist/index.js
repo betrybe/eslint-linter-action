@@ -288,8 +288,10 @@ const runEslint = __webpack_require__(250);
 const runNpm = __webpack_require__(287);
 
 const run = async () => {
+  console.log('DEBUG: ', process.env.GITHUB_WORKSPACE, process.cwd());
   try {
     const root = process.env.GITHUB_WORKSPACE || process.cwd();
+    console.log('root: ', root);
     const token = core.getInput('token', { required: true });
     const client = github.getOctokit(token);
     const { owner, repo } = github.context.issue;
@@ -4745,7 +4747,7 @@ const runEslintWithConfigFile = (file) => {
   const args = [
     'eslint',
     '-f', 'json',
-    '--ext', '.js, .jsx',
+    '--ext', '.ts, .tsx, .js, .jsx',
     '--no-error-on-unmatched-pattern',
     '-c', path.basename(file),
     '.',
@@ -4762,7 +4764,7 @@ const runEslintWithConfigFile = (file) => {
 
   logProcessConclusion(eslintProcess);
 
-  return { status: eslintProcess.status , outcomes };
+  return { status: eslintProcess.status, outcomes };
 };
 
 module.exports = runEslintWithConfigFile;
