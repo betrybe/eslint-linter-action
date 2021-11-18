@@ -4745,7 +4745,7 @@ const runEslintWithConfigFile = (file) => {
   const args = [
     'eslint',
     '-f', 'json',
-    '--ext', '.js, .jsx',
+    '--ext', '.ts, .tsx, .js, .jsx',
     '--no-error-on-unmatched-pattern',
     '-c', path.basename(file),
     '.',
@@ -4762,7 +4762,7 @@ const runEslintWithConfigFile = (file) => {
 
   logProcessConclusion(eslintProcess);
 
-  return { status: eslintProcess.status , outcomes };
+  return { status: eslintProcess.status, outcomes };
 };
 
 module.exports = runEslintWithConfigFile;

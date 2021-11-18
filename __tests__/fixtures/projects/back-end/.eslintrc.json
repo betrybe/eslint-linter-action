@@ -1,4 +1,5 @@
 {
+  "root": true,
   "rules": {
     "max-params": [
       "error",
