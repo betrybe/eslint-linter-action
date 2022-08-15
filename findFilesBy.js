@@ -27,11 +27,15 @@ const findFilesBy = (startDirectory, stringSearch) => {
       const stat = fs.lstatSync(filename);
 
       if (stat.isDirectory()) directories.push(filename);
-      else if (filename.indexOf(stringSearch) >= 0) foundFiles.push(filename);
+      else if (filename.indexOf(stringSearch) >= 0 && notGithubDirectory(filename)) foundFiles.push(filename);
     });
   }
 
   return foundFiles;
+};
+
+const notGithubDirectory = (filename) => {
+  return !filename.includes('.github/actions'); 
 };
 
 module.exports = findFilesBy;
