@@ -4,14 +4,14 @@ A GitHub action that evaluates projects with [ESLint](https://eslint.org/) and c
 
 ## Development
 
-⚠️ O Github actions ira rodar `dist/index.js` para executar essa action, então você *deve rodar* `npm run pack` e commitar as mudanças feitas no `dist/index.js` caso queira aplicar as mudanças no avaliador. ⚠️
+⚠️ Github actions will run `dist/index.js` to execute this action, so you *must run* `npm run pack` and commit the changes made at `dist/index.js` if you want to apply any changes. ⚠️
 
-Instalar as dependências
+Install the dependencies
 ```bash
 $ npm install
 ```
 
-Rodar os testes ⚗️
+Run the tests ⚗️
 ```bash
 $ npm test
 ```
