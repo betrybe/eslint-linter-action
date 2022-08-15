@@ -34,8 +34,6 @@ const findFilesBy = (startDirectory, stringSearch) => {
   return foundFiles;
 };
 
-const notGithubDirectory = (filename) => {
-  return !filename.includes('.github/actions'); 
-};
+const notGithubDirectory = (filename) => !filename.includes('.github/actions');
 
 module.exports = findFilesBy;
