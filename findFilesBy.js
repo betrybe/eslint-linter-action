@@ -22,7 +22,7 @@ const findFilesBy = (startDirectory, stringSearch) => {
     files.forEach((file) => {
       const filename = path.join(currentDirectory, file);
 
-      if (filename.indexOf('node_modules') !== -1) return;
+      if (notNodeModulesDirectory(filename) || isActionDirectory(filename)) return;
 
       const stat = fs.lstatSync(filename);
 
@@ -33,5 +33,9 @@ const findFilesBy = (startDirectory, stringSearch) => {
 
   return foundFiles;
 };
+
+const notNodeModulesDirectory = (filename) => filename.indexOf('node_modules') !== -1;
+
+const isActionDirectory = (filename) => filename.includes('.github/actions');
 
 module.exports = findFilesBy;
