@@ -4,14 +4,14 @@ A GitHub action that evaluates projects with [ESLint](https://eslint.org/) and c
 
 ## Development
 
-⚠️ Github actions will run `dist/index.js` to execute this action, so you *must run* `npm run pack` and commit the changes made at `dist/index.js` if you want to apply any changes. ⚠️
+⚠️ O Github actions ira rodar `dist/index.js` para executar essa action, então você *deve rodar* `npm run pack` e commitar as mudanças feitas no `dist/index.js` caso queira aplicar as mudanças no avaliador. ⚠️
 
-Install the dependencies
+Instalar as dependências
 ```bash
 $ npm install
 ```
 
-Run the tests :heavy_check_mark:
+Rodar os testes ⚗️
 ```bash
 $ npm test
 ```
@@ -71,6 +71,20 @@ steps:
       token: ${{ secrets.GITHUB_TOKEN }}
       pr_number: ${{ github.event.inputs.pr_number }}
 ```
+
+To projects running `Nodejs16`:
+```yaml
+steps:
+  - uses: actions/setup-node@v3
+    with:
+      node-version: '16'
+  - name: Static code analysis step
+    uses: betrybe/eslint-linter-action@v4
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      pr_number: ${{ github.event.inputs.pr_number }}
+```
+
 
 Allow inline configuration comments:
 
