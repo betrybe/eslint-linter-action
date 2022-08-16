@@ -66,7 +66,7 @@ steps:
     with:
       node-version: '12'
   - name: Static code analysis step
-    uses: betrybe/eslint-linter-action@v2
+    uses: betrybe/eslint-linter-action@v3.2
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       pr_number: ${{ github.event.inputs.pr_number }}
@@ -79,7 +79,7 @@ steps:
     with:
       node-version: '16'
   - name: Static code analysis step
-    uses: betrybe/eslint-linter-action@v4
+    uses: betrybe/eslint-linter-action@v3.3
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       pr_number: ${{ github.event.inputs.pr_number }}
@@ -94,7 +94,7 @@ steps:
     with:
       node-version: '12'
   - name: Static code analysis step
-    uses: betrybe/eslint-linter-action@v2
+    uses: betrybe/eslint-linter-action@v3.3
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       pr_number: ${{ github.event.inputs.pr_number }}
