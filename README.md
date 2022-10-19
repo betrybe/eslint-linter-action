@@ -11,7 +11,7 @@ Install the dependencies
 $ npm install
 ```
 
-Run the tests :heavy_check_mark:
+Run the tests ⚗️
 ```bash
 $ npm test
 ```
@@ -72,6 +72,20 @@ steps:
       pr_number: ${{ github.event.inputs.pr_number }}
 ```
 
+To projects running `Nodejs16`:
+```yaml
+steps:
+  - uses: actions/setup-node@v3
+    with:
+      node-version: '16'
+  - name: Static code analysis step
+    uses: betrybe/eslint-linter-action@v3.3
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      pr_number: ${{ github.event.inputs.pr_number }}
+```
+
+
 Allow inline configuration comments:
 
 ```yaml
@@ -80,7 +94,7 @@ steps:
     with:
       node-version: '12'
   - name: Static code analysis step
-    uses: betrybe/eslint-linter-action@v3.2
+    uses: betrybe/eslint-linter-action@v3.3
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       pr_number: ${{ github.event.inputs.pr_number }}
