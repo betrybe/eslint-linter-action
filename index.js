@@ -19,7 +19,7 @@ const run = async () => {
     console.log('All errors:', eslintOutcomes);
     console.log('Feedback message:\n', feedbackMessage);
 
-    await client.issues.createComment({
+    await client.rest.issues.createComment({
       owner,
       repo,
       issue_number: process.env.INPUT_PR_NUMBER,
