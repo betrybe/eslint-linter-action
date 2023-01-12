@@ -28,7 +28,14 @@ const run = async () => {
 
     process.exit(status);
   } catch (error) {
-    core.setFailed(error.message);
+    if (error.message.match(/Unexpected end of JSON input.*/)) {
+      core.summary
+        .addHeading('❌ Erro ao rodar o ESLint')
+        .addRaw('Remova o arquivo `package-lock.json` e tente rodar novamente o comando `npm install`. Se o erro persistir, contate o time Trybe')
+        .write();
+    } else {
+      core.setFailed(error.message);
+    }
   }
 };
 
